@@ -1,0 +1,38 @@
+{{define "saldo"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>{{template "head" .}}<title>Сальдо</title></head>
+<body>
+{{template "nav" .}}
+<h1>Сальдо по лицевым счетам</h1>
+{{template "flash" .}}
+
+<p class="hint">Сумма: положительная — долг, отрицательная — переплата. Повторная вставка за тот же счёт и месяц обновляет значение.</p>
+
+<form method="post">
+  <label>Лицевой счёт<input name="account_number" required maxlength="20"></label>
+  <label>Период (месяц)<input type="month" name="period" required></label>
+  <label>Сумма<input name="amount" required placeholder="500.00"></label>
+  <button type="submit">Сохранить</button>
+</form>
+
+{{if .Rows}}
+<table>
+  <thead><tr><th>ID</th><th>Счёт</th><th>Период</th><th>Сумма</th></tr></thead>
+  <tbody>
+  {{range .Rows}}
+    <tr>
+      <td>{{.ID}}</td>
+      <td>{{.AccountNumber}}</td>
+      <td>{{fmtMonth .Period}}</td>
+      <td class="num">{{.Amount}}</td>
+    </tr>
+  {{end}}
+  </tbody>
+</table>
+{{else}}
+<p>Записей пока нет.</p>
+{{end}}
+</body>
+</html>
+{{end}}

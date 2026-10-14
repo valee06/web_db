@@ -1,0 +1,15 @@
+{{define "reports"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>{{template "head" .}}<title>Отчёты</title></head>
+<body>
+{{template "nav" .}}
+<h1>Отчёты</h1>
+<ul>
+  <li><a href="/reports/turnover">Оборотная ведомость</a> — начисления, платежи и сальдо по всем счетам за год</li>
+  <li><a href="/reports/apartment">Начисления и платежи по квартире</a> — по месяцам для одного лицевого счёта</li>
+  <li><a href="/reports/debtors">Сводка по должникам</a> — категории задолженности по сроку</li>
+</ul>
+</body>
+</html>
+{{end}}

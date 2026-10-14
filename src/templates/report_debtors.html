@@ -1,0 +1,50 @@
+{{define "report_debtors"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>{{template "head" .}}<title>Сводка по должникам</title></head>
+<body>
+{{template "nav" .}}
+<h1>Сводка по должникам по состоянию на {{.AsOf}}</h1>
+{{if .Error}}<div class="flash error">{{.Error}}</div>{{end}}
+
+<form method="get" style="display:flex; gap:0.5rem; align-items:end; margin-bottom:1rem;">
+  <label>На дату<input type="date" name="as_of" value="{{.AsOf}}"></label>
+  <button type="submit">Показать</button>
+</form>
+
+{{if .Rows}}
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">Квартира</th>
+      <th rowspan="2">Начислено за последний месяц</th>
+      <th rowspan="2">Сальдо</th>
+      <th colspan="4">Задолженность</th>
+    </tr>
+    <tr>
+      <th>1 месяц</th>
+      <th>2 месяца</th>
+      <th>3 месяца</th>
+      <th>Свыше 3 месяцев</th>
+    </tr>
+  </thead>
+  <tbody>
+  {{range .Rows}}
+    <tr>
+      <td><strong>{{.AccountNumber}}</strong></td>
+      <td class="num">{{.LastCharge}}</td>
+      <td class="num">{{.Saldo}}</td>
+      <td class="num">{{.Debt1}}</td>
+      <td class="num">{{.Debt2}}</td>
+      <td class="num">{{.Debt3}}</td>
+      <td class="num">{{.DebtOver3}}</td>
+    </tr>
+  {{end}}
+  </tbody>
+</table>
+{{else}}
+<p>Должников нет.</p>
+{{end}}
+</body>
+</html>
+{{end}}

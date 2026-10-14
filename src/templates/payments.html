@@ -1,0 +1,38 @@
+{{define "payments"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>{{template "head" .}}<title>Платежи</title></head>
+<body>
+{{template "nav" .}}
+<h1>Платежи по лицевым счетам</h1>
+{{template "flash" .}}
+
+<form method="post">
+  <label>Лицевой счёт<input name="account_number" required maxlength="20"></label>
+  <label>Период (месяц)<input type="month" name="period" required></label>
+  <label>Дата поступления<input type="date" name="payment_date"></label>
+  <label>Сумма<input name="amount" required placeholder="900.00"></label>
+  <button type="submit">Добавить</button>
+</form>
+
+{{if .Rows}}
+<table>
+  <thead><tr><th>ID</th><th>Счёт</th><th>Период</th><th>Дата поступления</th><th>Сумма</th></tr></thead>
+  <tbody>
+  {{range .Rows}}
+    <tr>
+      <td>{{.ID}}</td>
+      <td>{{.AccountNumber}}</td>
+      <td>{{fmtMonth .Period}}</td>
+      <td>{{fmtDate .PaymentDate}}</td>
+      <td class="num">{{.Amount}}</td>
+    </tr>
+  {{end}}
+  </tbody>
+</table>
+{{else}}
+<p>Записей пока нет.</p>
+{{end}}
+</body>
+</html>
+{{end}}

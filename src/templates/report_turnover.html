@@ -1,0 +1,70 @@
+{{define "report_turnover"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>{{template "head" .}}
+<style>
+  table.turnover { font-size: 0.78rem; }
+  table.turnover td.cell { padding: 0.15rem 0.3rem; white-space: nowrap;
+                           text-align: right; font-variant-numeric: tabular-nums; }
+  table.turnover td.cell div { line-height: 1.2; }
+  table.turnover td.cell div:nth-child(1) { color: #900; }
+  table.turnover td.cell div:nth-child(2) { color: #060; }
+  table.turnover td.cell div:nth-child(3) { color: #036; font-weight: 600; }
+  table.turnover th { font-size: 0.75rem; padding: 0.25rem; }
+</style>
+<title>Оборотная ведомость</title></head>
+<body>
+{{template "nav" .}}
+<h1>Оборотная ведомость за {{.Year}} год</h1>
+{{if .Error}}<div class="flash error">{{.Error}}</div>{{end}}
+
+<form method="get" style="display:flex; gap:0.5rem; align-items:end; margin-bottom:1rem;">
+  <label>Год<input type="number" name="year" min="2000" max="2100" value="{{.Year}}"></label>
+  <button type="submit">Показать</button>
+</form>
+
+<p class="hint">
+  В каждой клетке:
+  <span style="color:#900">начисления</span> /
+  <span style="color:#060">платежи</span> /
+  <span style="color:#036; font-weight:600">сальдо на конец месяца</span>.
+</p>
+
+{{if .Rows}}
+<div style="overflow-x:auto;">
+<table class="turnover">
+  <thead>
+    <tr>
+      <th rowspan="2">Счёт</th>
+      <th rowspan="2">Вх. сальдо</th>
+      <th colspan="12">Месяц</th>
+      <th rowspan="2">Исх. сальдо</th>
+    </tr>
+    <tr>
+      {{range .MonthHeaders}}<th>{{.}}</th>{{end}}
+    </tr>
+  </thead>
+  <tbody>
+  {{range .Rows}}
+    <tr>
+      <td><strong>{{.AccountNumber}}</strong></td>
+      <td class="num">{{.InSaldo}}</td>
+      {{range .Months}}
+        <td class="cell">
+          <div>{{.Charges}}</div>
+          <div>{{.Payments}}</div>
+          <div>{{.Saldo}}</div>
+        </td>
+      {{end}}
+      <td class="num">{{.OutSaldo}}</td>
+    </tr>
+  {{end}}
+  </tbody>
+</table>
+</div>
+{{else}}
+<p>Нет данных за {{.Year}} год.</p>
+{{end}}
+</body>
+</html>
+{{end}}

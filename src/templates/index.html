@@ -1,0 +1,16 @@
+{{define "index"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>{{template "head" .}}<title>Учёт квартирных платежей</title></head>
+<body>
+{{template "nav" .}}
+<h1>Учёт квартирных платежей</h1>
+<p>Таблицы: <code>saldo</code>, <code>charges</code>, <code>payments</code>.</p>
+<ul>
+  <li><a href="/saldo">Сальдо</a> — состояние лицевого счёта на конец месяца</li>
+  <li><a href="/charges">Начисления</a> — что выставлено за месяц</li>
+  <li><a href="/payments">Платежи</a> — что поступило на расчётный счёт</li>
+</ul>
+</body>
+</html>
+{{end}}

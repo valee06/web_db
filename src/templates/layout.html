@@ -1,0 +1,39 @@
+{{define "head"}}
+<meta charset="UTF-8">
+<style>
+  body { font-family: -apple-system, system-ui, sans-serif; max-width: 1000px; margin: 2rem auto; padding: 0 1rem; color: #222; }
+  nav { display: flex; gap: 1rem; padding: 0.75rem 0; border-bottom: 1px solid #ccc; margin-bottom: 1.5rem; }
+  nav a { text-decoration: none; color: #036; font-weight: 500; }
+  nav a:hover { text-decoration: underline; }
+  h1 { font-size: 1.4rem; margin: 0 0 1rem; }
+  form { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 0.5rem; align-items: end; margin-bottom: 1.5rem; }
+  form label { display: flex; flex-direction: column; font-size: 0.85rem; gap: 0.25rem; }
+  input, button { padding: 0.4rem; font-size: 0.95rem; box-sizing: border-box; }
+  input { border: 1px solid #aaa; border-radius: 3px; }
+  button { cursor: pointer; background: #036; color: #fff; border: none; border-radius: 3px; padding: 0.5rem 1rem; }
+  button:hover { background: #024; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+  th, td { border: 1px solid #ccc; padding: 0.4rem 0.6rem; text-align: left; }
+  th { background: #f0f0f0; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .flash { padding: 0.6rem 0.9rem; border-radius: 3px; margin-bottom: 1rem; }
+  .flash.error { background: #fee; color: #900; border: 1px solid #fbb; }
+  .flash.success { background: #efe; color: #060; border: 1px solid #beb; }
+  .hint { color: #666; font-size: 0.85rem; margin-bottom: 1rem; }
+</style>
+{{end}}
+
+{{define "nav"}}
+<nav>
+  <a href="/">Главная</a>
+  <a href="/saldo">Сальдо</a>
+  <a href="/charges">Начисления</a>
+  <a href="/payments">Платежи</a>
+  <a href="/reports">Отчёты</a>
+</nav>
+{{end}}
+
+{{define "flash"}}
+{{if .Error}}<div class="flash error">{{.Error}}</div>{{end}}
+{{if .Success}}<div class="flash success">{{.Success}}</div>{{end}}
+{{end}}

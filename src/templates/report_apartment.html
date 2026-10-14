@@ -1,0 +1,81 @@
+{{define "report_apartment"}}
+<!DOCTYPE html>
+<html lang="ru">
+<head>{{template "head" .}}
+<style>
+  table.apt { width: auto; }
+  table.apt th, table.apt td { padding: 0.3rem 0.45rem; font-size: 0.85rem;
+                               text-align: right; font-variant-numeric: tabular-nums; }
+  table.apt th { text-align: center; }
+  table.apt td.lbl { text-align: left; font-weight: 600; white-space: nowrap; }
+  table.apt td.mid { vertical-align: middle; text-align: right; font-weight: 600; }
+  table.apt col.grp { border-right: 2px solid #999; }
+  table.apt td.grp-r { border-right: 2px solid #999; }
+  table.apt td.grp-l { border-left: 2px solid #999; }
+  .to-pay { text-align: right; margin-top: 0.8rem; font-size: 1.05rem; }
+</style>
+<title>Начисления и платежи по квартире</title></head>
+<body>
+{{template "nav" .}}
+<h1>Начисления и платежи по квартире за {{.Year}} год</h1>
+{{if .Error}}<div class="flash error">{{.Error}}</div>{{end}}
+
+<form method="get" style="display:flex; gap:0.5rem; align-items:end; margin-bottom:1rem;">
+  <label>Лицевой счёт
+    <select name="account" required>
+      <option value="">— выберите —</option>
+      {{$cur := .Account}}
+      {{range .Accounts}}
+        <option value="{{.}}" {{if eq . $cur}}selected{{end}}>{{.}}</option>
+      {{end}}
+    </select>
+  </label>
+  <label>Год<input type="number" name="year" min="2000" max="2100" value="{{.Year}}"></label>
+  <button type="submit">Показать</button>
+</form>
+
+{{if .Rows}}
+<div style="overflow-x:auto;">
+<table class="apt">
+  <colgroup>
+    <col><col class="grp">
+    {{range .Rows}}<col>{{end}}
+    <col class="grp">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th rowspan="2"></th>
+      <th rowspan="2" class="grp-r">На начало года<br>(+ долг / − переплата)</th>
+      <th colspan="{{len .Rows}}">Месяц</th>
+      <th rowspan="2" class="grp-l grp-r">Итого</th>
+      <th rowspan="2">+ долг / − переплата<br>(на конец года)</th>
+    </tr>
+    <tr>
+      {{range .Rows}}<th>{{.MonthCode}}</th>{{end}}
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="lbl">Начисл.</td>
+      <td rowspan="2" class="mid grp-r">{{.SaldoStart}}</td>
+      {{range .Rows}}<td>{{.Charges}}</td>{{end}}
+      <td class="grp-l grp-r"><strong>{{.TotalCharges}}</strong></td>
+      <td rowspan="2" class="mid">{{.TotalToPay}}</td>
+    </tr>
+    <tr>
+      <td class="lbl">Оплач.</td>
+      {{range .Rows}}<td>{{.Payments}}</td>{{end}}
+      <td class="grp-l grp-r"><strong>{{.TotalPayments}}</strong></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p class="to-pay"><strong>Итого к оплате: {{.TotalToPay}}</strong></p>
+{{else if .Account}}
+<p>Нет данных.</p>
+{{end}}
+</body>
+</html>
+{{end}}
